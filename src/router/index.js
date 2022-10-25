@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 
 import Home from '../application/Home'
 import Rank from '../application/Rank'
@@ -12,7 +12,11 @@ const router = createBrowserRouter([
     children: [
       // 默认跳转到推荐列表
       {
-        index: true,
+        path: '/',
+        element: <Navigate replace to={'/recommend'} />,
+      },
+      {
+        path: '/recommend',
         element: <Recommend />,
       },
       {
