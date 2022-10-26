@@ -1,5 +1,7 @@
 import React from 'react'
 
+import LazyLoad from 'react-lazyload'
+
 import { List, ListItem, ListWrapper } from './style'
 
 import { formatNumber } from '../../../../utils'
@@ -14,13 +16,25 @@ function RecommendList(props) {
             <ListItem key={item.id + index}>
               <div className="img_wrapper">
                 <div className="decorate"></div>
-                {/* 加此参数可以减小请求的图片资源大小 */}
-                <img
-                  src={item.picUrl + '?param=300x300'}
-                  width="100%"
-                  height="100%"
-                  alt="music"
-                />
+                <LazyLoad
+                  // 图片未加载时使用默认图片占位
+                  placeholder={
+                    <img
+                      width="100%"
+                      height="100%"
+                      src={require('./music.png')}
+                      alt="music"
+                    />
+                  }
+                >
+                  {/* 加此参数可以减小请求的图片资源大小 */}
+                  <img
+                    src={item.picUrl + '?param=300x300'}
+                    width="100%"
+                    height="100%"
+                    alt="music"
+                  />
+                </LazyLoad>
                 <div className="play_count">
                   <i className="iconfont play">&#xe885;</i>
                   <span className="count">{formatNumber(item.playCount)}</span>

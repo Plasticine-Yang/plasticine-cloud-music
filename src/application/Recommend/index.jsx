@@ -6,8 +6,10 @@ import Slider from '../../components/Slider'
 import RecommendList from './components/RecommendList'
 import { RecommendContainer } from './style'
 
-import { actionCreators } from './store'
 import { connect } from 'react-redux'
+import { actionCreators } from './store'
+
+import { forceCheck } from 'react-lazyload'
 
 function Recommend(props) {
   const { bannerList, recommendList } = props
@@ -29,7 +31,7 @@ function Recommend(props) {
 
   return (
     <RecommendContainer>
-      <Scroll>
+      <Scroll onScroll={forceCheck}>
         <div>
           <Slider bannerList={bannerListJS} />
           <RecommendList recommendList={recommendListJS} />
