@@ -1,8 +1,10 @@
 import React from 'react'
+import Scroll from '../../base-ui/Scroll'
 
 import Slider from '../../components/Slider'
 
 import RecommendList from './components/RecommendList'
+import { RecommendContainer } from './style'
 
 function Recommend() {
   // mock data
@@ -21,10 +23,14 @@ function Recommend() {
   }))
 
   return (
-    <div>
-      <Slider bannerList={bannerList} />
-      <RecommendList recommendList={recommendList} />
-    </div>
+    <RecommendContainer>
+      <Scroll>
+        <div>
+          <Slider bannerList={bannerList} />
+          <RecommendList recommendList={recommendList} />
+        </div>
+      </Scroll>
+    </RecommendContainer>
   )
 }
 
