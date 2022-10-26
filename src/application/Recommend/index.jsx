@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
+
 import Scroll from '../../base-ui/Scroll'
+import Loading from '../../base-ui/Loading'
 
 import Slider from '../../components/Slider'
 
@@ -12,7 +14,7 @@ import { actionCreators } from './store'
 import { forceCheck } from 'react-lazyload'
 
 function Recommend(props) {
-  const { bannerList, recommendList } = props
+  const { bannerList, recommendList, enterLoading } = props
   const { getBannerDataDispatch, getRecommendListDataDispatch } = props
 
   useEffect(() => {
@@ -37,6 +39,9 @@ function Recommend(props) {
           <RecommendList recommendList={recommendListJS} />
         </div>
       </Scroll>
+
+      {/* 加载动画 */}
+      {enterLoading ? <Loading /> : null}
     </RecommendContainer>
   )
 }
@@ -46,6 +51,7 @@ const mapStateToProps = state => {
   return {
     bannerList: state.getIn(['recommend', 'bannerList']),
     recommendList: state.getIn(['recommend', 'recommendList']),
+    enterLoading: state.getIn(['recommend', 'enterLoading']),
   }
 }
 

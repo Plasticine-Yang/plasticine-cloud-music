@@ -4,6 +4,8 @@ import { fromJS } from 'immutable'
 const defaultState = fromJS({
   bannerList: [],
   recommendList: [],
+  // 推荐列表加载时的动画
+  enterLoading: true,
 })
 
 const reducer = (state = defaultState, action) => {
@@ -13,6 +15,9 @@ const reducer = (state = defaultState, action) => {
 
     case actionTypes.CHANGE_RECOMMEND_LIST:
       return state.set('recommendList', action.payload)
+
+    case actionTypes.CHANGE_ENTER_LOADING:
+      return state.set('enterLoading', action.payload)
 
     default:
       return state
