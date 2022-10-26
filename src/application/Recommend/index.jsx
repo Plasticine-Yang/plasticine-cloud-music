@@ -42,8 +42,8 @@ function Recommend(props) {
 // 连接 redux 到 react 中
 const mapStateToProps = state => {
   return {
-    bannerList: state.recommend.get('bannerList'),
-    recommendList: state.recommend.get('recommendList'),
+    bannerList: state.getIn(['recommend', 'bannerList']),
+    recommendList: state.getIn(['recommend', 'recommendList']),
   }
 }
 
