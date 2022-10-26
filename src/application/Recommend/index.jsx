@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Scroll from '../../base-ui/Scroll'
 
 import Slider from '../../components/Slider'
@@ -6,32 +6,57 @@ import Slider from '../../components/Slider'
 import RecommendList from './components/RecommendList'
 import { RecommendContainer } from './style'
 
-function Recommend() {
-  // mock data
-  const bannerList = [1, 2, 3, 4].map(id => ({
-    id,
-    imageUrl:
-      'http://p1.music.126.net/ZYLJ2oZn74yUz5x8NBGkVA==/109951164331219056.jpg',
-  }))
+import { actionCreators } from './store'
+import { connect } from 'react-redux'
 
-  const recommendList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(id => ({
-    id,
-    picUrl:
-      'https://p1.music.126.net/fhmefjUfMD-8qtj3JKeHbA==/18999560928537533.jpg',
-    playCount: 17171122,
-    name: '朴树、许巍、李健、郑钧、老狼、赵雷',
-  }))
+function Recommend(props) {
+  const { bannerList, recommendList } = props
+  const { getBannerDataDispatch, getRecommendListDataDispatch } = props
+
+  useEffect(() => {
+    if (!bannerList.size) {
+      getBannerDataDispatch()
+    }
+
+    if (!recommendList.size) {
+      getRecommendListDataDispatch()
+    }
+    // eslint-disable-next-line
+  }, [])
+
+  const bannerListJS = bannerList ? bannerList.toJS() : []
+  const recommendListJS = recommendList ? recommendList.toJS() : []
 
   return (
     <RecommendContainer>
       <Scroll>
         <div>
-          <Slider bannerList={bannerList} />
-          <RecommendList recommendList={recommendList} />
+          <Slider bannerList={bannerListJS} />
+          <RecommendList recommendList={recommendListJS} />
         </div>
       </Scroll>
     </RecommendContainer>
   )
 }
 
-export default React.memo(Recommend)
+// 连接 redux 到 react 中
+const mapStateToProps = state => {
+  return {
+    bannerList: state.recommend.get('bannerList'),
+    recommendList: state.recommend.get('recommendList'),
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  getBannerDataDispatch() {
+    dispatch(actionCreators.getBannerList())
+  },
+  getRecommendListDataDispatch() {
+    dispatch(actionCreators.getRecommendList())
+  },
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(React.memo(Recommend))

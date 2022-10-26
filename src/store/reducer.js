@@ -1,5 +1,9 @@
-const { combineReducers } = require('redux')
+import { reducer as recommendReducer } from '../application/Recommend/store'
 
-const reducer = combineReducers({})
+import { combineReducers } from 'redux'
+
+const reducer = combineReducers({
+  recommend: recommendReducer,
+})
 
 export default reducer
