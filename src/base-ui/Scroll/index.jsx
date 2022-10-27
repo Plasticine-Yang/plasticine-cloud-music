@@ -9,7 +9,13 @@ import {
 import PropTypes from 'prop-types'
 
 import BScroll from 'better-scroll'
+
 import { ScrollContainer } from './style'
+
+import { PullDownLoading, PullUpLoading } from '../PullLoading/style'
+
+import Loading from '../Loading'
+import PullLoading from '../PullLoading'
 
 const Scroll = forwardRef((props, ref) => {
   // ================ destruct props ================
@@ -127,8 +133,27 @@ const Scroll = forwardRef((props, ref) => {
     },
   }))
 
+  const PullUpDisplayStyle = pullUpLoading
+    ? { display: '' }
+    : { display: 'none' }
+
+  const PullDownDisplayStyle = pullDownLoading
+    ? { display: '' }
+    : { display: 'none' }
+
   return (
-    <ScrollContainer ref={scrollContainerRef}>{props.children}</ScrollContainer>
+    <ScrollContainer ref={scrollContainerRef}>
+      {props.children}
+      {/* 滑动到底部时出现的加载动画 */}
+      <PullUpLoading style={PullUpDisplayStyle}>
+        <Loading />
+      </PullUpLoading>
+
+      {/* 滑动到顶部时出现的加载动画 */}
+      <PullDownLoading style={PullDownDisplayStyle}>
+        <PullLoading />
+      </PullDownLoading>
+    </ScrollContainer>
   )
 })
 
