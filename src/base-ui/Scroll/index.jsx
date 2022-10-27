@@ -25,7 +25,7 @@ const Scroll = forwardRef((props, ref) => {
   } = props
 
   // callback props
-  const { pullUp, pullDown, onScroll } = props
+  const { onPullUp, onPullDown, onScroll } = props
 
   // ================ better scroll ================
   const [betterScrollInstance, setBetterScrollInstance] = useState()
@@ -80,34 +80,34 @@ const Scroll = forwardRef((props, ref) => {
 
   // 上拉到底时执行 pullUp 回调
   useEffect(() => {
-    if (!betterScrollInstance || !pullUp) return
+    if (!betterScrollInstance || !onPullUp) return
 
     betterScrollInstance.on('scrollEnd', () => {
       if (betterScrollInstance.y <= betterScrollInstance.maxScrollY + 100) {
         // 上拉到距离底部还有 100 个单位时就执行 pullUp 回调
-        pullUp()
+        onPullUp()
       }
     })
 
     return () => {
       betterScrollInstance.off('scrollEnd')
     }
-  }, [betterScrollInstance, pullUp])
+  }, [betterScrollInstance, onPullUp])
 
   // 下拉长度超过 50 个单位时就触发 pullDown 回调
   useEffect(() => {
-    if (!betterScrollInstance || !pullDown) return
+    if (!betterScrollInstance || !onPullDown) return
 
     betterScrollInstance.on('touchEnd', position => {
       if (position.y > 50) {
-        pullDown()
+        onPullDown()
       }
     })
 
     return () => {
       betterScrollInstance.off('touchEnd')
     }
-  }, [betterScrollInstance, pullDown])
+  }, [betterScrollInstance, onPullDown])
 
   // 暴露 refresh 和 getBetterScrollInstance 方法给外界
   useImperativeHandle(ref, () => ({
@@ -136,26 +136,26 @@ Scroll.propTypes = {
   direction: PropTypes.oneOf(['vertical', 'horizontal']), // 滚动的方向
   click: PropTypes.bool, // 是否支持点击
   refresh: PropTypes.bool, // 是否刷新
-  onScroll: PropTypes.func, // 滑动触发的回调函数
-  pullUp: PropTypes.func, // 上拉加载逻辑
-  pullDown: PropTypes.func, // 下拉加载逻辑
   pullUpLoading: PropTypes.bool, // 是否显示上拉 loading 动画
   pullDownLoading: PropTypes.bool, // 是否显示下拉 loading 动画
   bounceTop: PropTypes.bool, // 是否支持向上吸顶
   bounceBottom: PropTypes.bool, // 是否支持向下吸底
+  onScroll: PropTypes.func, // 滑动触发的回调函数
+  onPullUp: PropTypes.func, // 上拉加载逻辑
+  onPullDown: PropTypes.func, // 下拉加载逻辑
 }
 
 Scroll.defaultProps = {
   direction: 'vertical',
   click: true,
   refresh: true,
-  onScroll: null,
   pullUpLoading: false,
   pullDownLoading: false,
-  pullUp: null,
-  pullDown: null,
   bounceTop: true,
   bounceBottom: true,
+  onScroll: null,
+  onPullUp: null,
+  onPullDown: null,
 }
 
 export default Scroll

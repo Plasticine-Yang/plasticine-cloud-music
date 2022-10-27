@@ -1,14 +1,14 @@
 import * as actionTypes from './constants'
 import { fromJS } from 'immutable'
 
-const defaultState = fromJS({
+const initialState = fromJS({
   bannerList: [],
   recommendList: [],
   // 推荐列表加载时的动画
   enterLoading: true,
 })
 
-const reducer = (state = defaultState, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.CHANGE_BANNER:
       return state.set('bannerList', action.payload)

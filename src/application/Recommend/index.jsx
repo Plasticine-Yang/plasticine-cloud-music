@@ -9,7 +9,7 @@ import RecommendList from './components/RecommendList'
 import { RecommendContainer } from './style'
 
 import { connect } from 'react-redux'
-import { actionCreators } from './store'
+import { recommendActionCreators } from './store'
 
 import { forceCheck } from 'react-lazyload'
 
@@ -57,10 +57,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   getBannerDataDispatch() {
-    dispatch(actionCreators.getBannerList())
+    dispatch(recommendActionCreators.getBannerList())
   },
   getRecommendListDataDispatch() {
-    dispatch(actionCreators.getRecommendList())
+    dispatch(recommendActionCreators.getRecommendList())
   },
 })
 
