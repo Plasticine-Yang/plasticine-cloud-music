@@ -2,6 +2,7 @@ import {
   forwardRef,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -16,6 +17,8 @@ import { PullDownLoading, PullUpLoading } from '../PullLoading/style'
 
 import Loading from '../Loading'
 import PullLoading from '../PullLoading'
+
+import { debounce } from '../../utils'
 
 const Scroll = forwardRef((props, ref) => {
   // ================ destruct props ================
@@ -32,6 +35,15 @@ const Scroll = forwardRef((props, ref) => {
 
   // callback props
   const { onPullUp, onPullDown, onScroll } = props
+
+  // 对上拉下拉回调进行防抖处理优化，避免频繁触发
+  const onPullUpDebounce = useMemo(() => {
+    return debounce(onPullUp, 300)
+  }, [onPullUp])
+
+  const onPullDownDebounce = useMemo(() => {
+    return debounce(onPullDown, 300)
+  }, [onPullDown])
 
   // ================ better scroll ================
   const [betterScrollInstance, setBetterScrollInstance] = useState()
@@ -91,14 +103,14 @@ const Scroll = forwardRef((props, ref) => {
     betterScrollInstance.on('scrollEnd', () => {
       if (betterScrollInstance.y <= betterScrollInstance.maxScrollY + 100) {
         // 上拉到距离底部还有 100 个单位时就执行 pullUp 回调
-        onPullUp()
+        onPullUpDebounce()
       }
     })
 
     return () => {
       betterScrollInstance.off('scrollEnd')
     }
-  }, [betterScrollInstance, onPullUp])
+  }, [betterScrollInstance, onPullUp, onPullUpDebounce])
 
   // 下拉长度超过 50 个单位时就触发 pullDown 回调
   useEffect(() => {
@@ -106,14 +118,14 @@ const Scroll = forwardRef((props, ref) => {
 
     betterScrollInstance.on('touchEnd', position => {
       if (position.y > 50) {
-        onPullDown()
+        onPullDownDebounce()
       }
     })
 
     return () => {
       betterScrollInstance.off('touchEnd')
     }
-  }, [betterScrollInstance, onPullDown])
+  }, [betterScrollInstance, onPullDown, onPullDownDebounce])
 
   // 暴露 refresh 和 getBetterScrollInstance 方法给外界
   useImperativeHandle(ref, () => ({
