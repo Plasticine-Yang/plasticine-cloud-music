@@ -14,7 +14,7 @@ import {
   loadMoreSingerList,
 } from './store/actionCreators'
 import { connect } from 'react-redux'
-import { forceCheck } from 'react-lazyload'
+import LazyLoad, { forceCheck } from 'react-lazyload'
 
 function Singers(props) {
   const { singerList, pullUpLoading, pullDownLoading, pageCount } = props
@@ -66,12 +66,23 @@ function Singers(props) {
           return (
             <ListItem key={item.id}>
               <div className="img_wrapper">
-                <img
-                  src={`${item.picUrl}?param=300x300`}
-                  width="100%"
-                  height="100%"
-                  alt="music"
-                />
+                <LazyLoad
+                  placeholder={
+                    <img
+                      width="100%"
+                      height="100%"
+                      src={require('./singer.png')}
+                      alt="singer"
+                    />
+                  }
+                >
+                  <img
+                    src={`${item.picUrl}?param=300x300`}
+                    width="100%"
+                    height="100%"
+                    alt="singer"
+                  />
+                </LazyLoad>
               </div>
               <span className="name">{item.name}</span>
             </ListItem>
