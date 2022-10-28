@@ -9,12 +9,18 @@ import router from './router'
 
 import store from './store'
 
+import SingerContext from './application/Singers/singer-context'
+
 function App() {
   return (
     <Provider store={store}>
       <GlobalStyle></GlobalStyle>
       <IconStyle></IconStyle>
-      <RouterProvider router={router} />
+
+      {/* 歌手列表页 context */}
+      <SingerContext>
+        <RouterProvider router={router} />
+      </SingerContext>
     </Provider>
   )
 }

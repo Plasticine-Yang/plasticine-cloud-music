@@ -1,4 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+
+import { connect } from 'react-redux'
+
+import LazyLoad, { forceCheck } from 'react-lazyload'
 
 import { alphaTypes, categoryTypes } from '../../api'
 
@@ -13,8 +17,12 @@ import {
   loadMoreHotSingerList,
   loadMoreSingerList,
 } from './store/actionCreators'
-import { connect } from 'react-redux'
-import LazyLoad, { forceCheck } from 'react-lazyload'
+
+import {
+  SingerFilterParamsContext,
+  CHANGE_CATEGORY,
+  CHANGE_ALPHA,
+} from './singer-context'
 
 function Singers(props) {
   const { singerList, pullUpLoading, pullDownLoading, pageCount } = props
@@ -26,8 +34,13 @@ function Singers(props) {
     pullDownRefreshDispatch,
   } = props
 
-  const [activeCategoryKey, setActiveCategoryKey] = useState('')
-  const [activeAlphaKey, setActiveAlphaKey] = useState('')
+  const {
+    singerFilterParamsContextState,
+    dispatchSingerFilterParamsContextState,
+  } = useContext(SingerFilterParamsContext)
+
+  const { activeCategoryKey, activeAlphaKey } =
+    singerFilterParamsContextState.toJS()
 
   // 组件挂载后默认加载热门歌手列表
   useState(() => {
@@ -35,12 +48,18 @@ function Singers(props) {
   }, [])
 
   const handleChangeCategoryKey = categoryKey => {
-    setActiveCategoryKey(categoryKey)
+    dispatchSingerFilterParamsContextState({
+      type: CHANGE_CATEGORY,
+      payload: categoryKey,
+    })
     resetFilterParamsDispatch(categoryKey, activeAlphaKey)
   }
 
   const handleChangeAlphaKey = alphaKey => {
-    setActiveAlphaKey(alphaKey)
+    dispatchSingerFilterParamsContextState({
+      type: CHANGE_ALPHA,
+      payload: alphaKey,
+    })
     resetFilterParamsDispatch(activeCategoryKey, alphaKey)
   }
 
