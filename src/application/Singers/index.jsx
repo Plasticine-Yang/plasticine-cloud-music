@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { connect } from 'react-redux'
 
@@ -42,9 +42,13 @@ function Singers(props) {
   const { activeCategoryKey, activeAlphaKey } =
     singerFilterParamsContextState.toJS()
 
-  // 组件挂载后默认加载热门歌手列表
-  useState(() => {
-    getHotSingerDispatch()
+  // 歌手列表页数据缓存
+  useEffect(() => {
+    if (!singerList.size) {
+      getHotSingerDispatch()
+      console.log('hh');
+    }
+    // eslint-disable-next-line
   }, [])
 
   const handleChangeCategoryKey = categoryKey => {
