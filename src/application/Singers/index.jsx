@@ -46,7 +46,6 @@ function Singers(props) {
   useEffect(() => {
     if (!singerList.size) {
       getHotSingerDispatch()
-      console.log('hh')
     }
     // eslint-disable-next-line
   }, [])
