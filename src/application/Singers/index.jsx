@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 
 import { connect } from 'react-redux'
 
@@ -19,9 +19,9 @@ import {
 } from './store/actionCreators'
 
 import {
-  SingerFilterParamsContext,
-  CHANGE_CATEGORY,
   CHANGE_ALPHA,
+  CHANGE_CATEGORY,
+  SingerFilterParamsContext,
 } from './singer-context'
 
 function Singers(props) {
@@ -46,7 +46,7 @@ function Singers(props) {
   useEffect(() => {
     if (!singerList.size) {
       getHotSingerDispatch()
-      console.log('hh');
+      console.log('hh')
     }
     // eslint-disable-next-line
   }, [])
