@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { useNavigate } from 'react-router'
+
 import LazyLoad from 'react-lazyload'
 
 import { List, ListItem, ListWrapper } from './style'
@@ -7,13 +9,18 @@ import { List, ListItem, ListWrapper } from './style'
 import { formatNumber } from '../../../../utils'
 
 function RecommendList(props) {
+  const navigate = useNavigate()
+
   return (
     <ListWrapper>
       <h1 className="title"> 推荐歌单 </h1>
       <List>
-        {props.recommendList.map((item, index) => {
+        {props.recommendList.map(item => {
           return (
-            <ListItem key={item.id + index}>
+            <ListItem
+              key={item.id}
+              onClick={() => navigate(`/recommend/${item.id}`)}
+            >
               <div className="img_wrapper">
                 <div className="decorate"></div>
                 <LazyLoad

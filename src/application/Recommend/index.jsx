@@ -13,6 +13,8 @@ import { recommendActionCreators } from './store'
 
 import { forceCheck } from 'react-lazyload'
 
+import { Outlet } from 'react-router'
+
 function Recommend(props) {
   const { bannerList, recommendList, enterLoading } = props
   const { getBannerDataDispatch, getRecommendListDataDispatch } = props
@@ -42,6 +44,9 @@ function Recommend(props) {
 
       {/* 加载动画 */}
       {enterLoading ? <Loading /> : null}
+
+      {/* 歌单详情 */}
+      <Outlet />
     </RecommendContainer>
   )
 }
